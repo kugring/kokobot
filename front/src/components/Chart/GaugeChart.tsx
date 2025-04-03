@@ -36,13 +36,14 @@ const GaugeChart = ({
     const needleAngle = -111 + percentage * 2.3 * (1 - (percentage / 100) * 0.04) // 값이 정확하진 않음
     const { color: gaugeColor, text: statusText } = calculateGaugeStatus(value, styleColors, baseline, statusTexts, reverseColor)
 
-    // let addRotation = 0
-    // if (baseline.low < value && value < baseline.high) {
-    //     const minPercentage = (baseline.low - min) / (max - min)
-    //     addRotation = 220 * minPercentage
-    //     console.log(minPercentage)
-    // }
-
+    let addRotation = 0
+    let addPercentage = 0
+    if (baseline.low < value && value < baseline.high) {
+        const minPercentage = (baseline.low - min) / (max - min)
+        addRotation = 220 * minPercentage
+        addPercentage = minPercentage
+    }
+    const test = percentage - addPercentage
     return (
         <ChartContainer>
             <GaugeWrapper>
@@ -61,24 +62,28 @@ const GaugeChart = ({
                         })}
                     />
                 </BackgroundGauge>
-                
+
                 {/* 실제 값 표시용 원형 그래프 */}
-                <CircularProgressbar
-                    value={percentage}
-                    strokeWidth={24}
-                    circleRatio={CIRCLE_RATIO}
-                    styles={buildStyles({
-                        strokeLinecap: "butt",
-                        rotation: 250 / 360,
-                        pathTransitionDuration: 1,
-                        pathColor: gaugeColor,
-                        trailColor: "transparent",
-                    })}
-                />
-                <NeedleContainer $angle={needleAngle}>
+                <ValueGauge>
+                    <CircularProgressbar
+                        value={test}
+                        strokeWidth={24}
+                        circleRatio={CIRCLE_RATIO}
+                        styles={buildStyles({
+                            strokeLinecap: "butt",
+                            rotation: 250 / 360 + (addRotation / 360),
+                            pathTransitionDuration: 1,
+                            pathColor: gaugeColor,
+                            trailColor: "transparent",
+                        })}
+                    />
+                </ValueGauge>
+
+                <NeedleContainer $angle={needleAngle + addRotation}>
                     <Needle color={gaugeColor} />
                     <NeedleCenter />
                 </NeedleContainer>
+                
             </GaugeWrapper>
             {formatValue && (
                 <StatusText color={gaugeColor}>
@@ -103,7 +108,7 @@ const GaugeWrapper = styled.div`
     height: ${width};
     overflow: visible;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 
     .CircularProgressbar {
         width: 100%;
@@ -156,5 +161,18 @@ const BackgroundGauge = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
     z-index: 1;
-`;
+    pointer-events: none;
+`
+
+const ValueGauge = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    pointer-events: none;
+`

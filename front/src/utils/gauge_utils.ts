@@ -8,7 +8,7 @@ export const calculateGaugeStatus = (
     reverseColor: boolean = false
 ) => {
     // 값이 min과 max 사이의 어느 위치에 있는지 퍼센트로 계산
-    const status = value < baseline.low ? 'low' : value > baseline.high ? 'high' : 'medium';
+    const status = value <= baseline.low ? 'low' : value >= baseline.high ? 'high' : 'medium';
 
     // 퍼센트에 따라 상태 결정
     if (status === 'low') {
