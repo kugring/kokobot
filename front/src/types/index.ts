@@ -1,8 +1,25 @@
-import { DataItem } from "./table_type";
 import { RouteInfo } from "./route_info";
-import { CalendarTodo } from "./calander_type";
-import { ColumnDefinition } from "./table_type";
-import { GaugeBaseline, GaugeStatusTexts } from "./gaugeChart_type";
+import { FarmStatus } from "./interface";
+import { FormatterType, UnitType, UnitPosition, DateFormatType } from "./enums";
+import { CalendarTodo, TableColumnSetting, FormatOptions, GaugeBaseline, GaugeStatusTexts, TableStyles } from "./components";
 
-export type { DataItem, CalendarTodo, ColumnDefinition, RouteInfo, GaugeBaseline, GaugeStatusTexts };
+// 기존 타입들을 내보내기
+export type { 
+    RouteInfo, 
+    FarmStatus, 
+    TableStyles,
+    CalendarTodo, 
+    GaugeBaseline, 
+    FormatOptions, 
+    GaugeStatusTexts, 
+    TableColumnSetting,
+};
+
+// enum은 값을 사용해야함으로 type을 제거하고 내보내기
+export {
+    UnitType, 
+    UnitPosition, 
+    FormatterType, 
+    DateFormatType,
+};
 

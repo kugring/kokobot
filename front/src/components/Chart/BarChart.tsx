@@ -1,9 +1,8 @@
 import styled from "styled-components"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
-import { DataItem } from "../../types/index"
 
-interface ChartComponentProps {
-    data: DataItem[];
+interface BarChartComponentProps {
+    data: any;
     chartColors: {
         sales: string;
         profit: string;
@@ -11,11 +10,11 @@ interface ChartComponentProps {
     chartTitle: string;
 }
 
-const ChartComponent = ({
+const BarChartComponent = ({
     data,
     chartColors,
     chartTitle
-}: ChartComponentProps) => {
+}: BarChartComponentProps) => {
     return (
         <ChartCard>
             <ChartTitle>{chartTitle}</ChartTitle>
@@ -34,7 +33,7 @@ const ChartComponent = ({
     )
 }
 
-export default ChartComponent
+export default BarChartComponent
 
 const ChartCard = styled.div`
     background: white;

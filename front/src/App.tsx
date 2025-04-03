@@ -1,8 +1,8 @@
 import './App.css';
 import { useEffect } from 'react';
 import { mainRoutes } from './routes/route';
-import { useLocation, useRoutes } from 'react-router-dom';
 import { getPageTitle } from './utils';
+import { useLocation, useRoutes } from 'react-router-dom';
 
 //              component: 어플리케이션 컴포넌트                //
 function App() {

@@ -1,16 +1,12 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styled from 'styled-components';
+import { TableStyles } from 'types';
 
 interface DraggableTableHeaderProps {
     id: string;
     children: React.ReactNode;
-    $tableStyles: {
-        headerBackground: string;
-        headerHoverBackground: string;
-        rowHoverBackground: string;
-        borderColor: string;
-    };
+    $tableStyles: TableStyles;
 }
 
 const StyledTh = styled.th<{ $tableStyles: DraggableTableHeaderProps['$tableStyles'] }>`

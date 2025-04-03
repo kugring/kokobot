@@ -1,4 +1,4 @@
-import { CalendarTodo } from "../types/calander_type";
+import { CalendarTodo } from "../types/components/calander_type";
 import { WEEKDAYS, TodoType, TODO_INFO } from "../constants/calander_constants";
 
 // 타입별 할일 제목 매핑

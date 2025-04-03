@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+
+    "baseUrl": "./src", // 초기 수기설정
     "target": "es5",
     "lib": [
       "dom",

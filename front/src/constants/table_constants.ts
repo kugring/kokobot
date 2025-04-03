@@ -1,74 +1,116 @@
-import { DataItem, ColumnDefinition } from "../types/table_type";
+import { FormatterType, UnitType } from 'types';
+import { TableColumnSetting, TableStyles } from '../types/components/table_type';
 import GaugeChart from "../components/Chart/GaugeChart";
+import React from 'react';
 
-// 상수 정의
+// 상수 정의  
 export const CHART_COLORS = {
-  sales: '#8884d8',
-  profit: '#82ca9d',
+  survivalRate: '#8884d8',
+  production: '#82ca9d',
 };
 
-export const TABLE_STYLES = {
+export const DEFAULT_TABLE_STYLES: TableStyles = {
   headerBackground: '#e0f7fa', // 연한 파란색
   headerHoverBackground: '#b2ebf2', // 더 진한 파란색
   rowHoverBackground: '#f1f8e9', // 연한 녹색
   borderColor: '#cfd8dc', // 연한 회색
 };
 
-// 랜덤 샘플 데이터 생성 함수
-const generateRandomData = (numItems: number): DataItem[] => {
-  const products = ['제품 A', '제품 B', '제품 C', '제품 D', '제품 E', '제품 F', '제품 G', '제품 H'];
-  const data: DataItem[] = [];
-
-  for (let i = 0; i < numItems; i++) {
-    const randomIndex = Math.floor(Math.random() * products.length);
-    const sales = Math.floor(Math.random() * 2000000) + 500000; // 500,000 ~ 2,500,000
-    const profit = Math.floor(sales * (Math.random() * 0.3 + 0.1)); // 10% ~ 40% of sales
-    const growth = Math.floor(Math.random() * 50); // 0% ~ 50%
-    const gaugeValue = Math.floor(Math.random() * 100); // 0-100 사이의 랜덤 값
-
-    data.push({
-      name: products[randomIndex],
-      sales,
-      profit,
-      growth,
-      gaugeValue,
-    });
-  }
-
-  return data;
-};
-
-// 샘플 데이터
-export const sampleData: DataItem[] = generateRandomData(10); // 10개의 랜덤 데이터 생성
-
-
-export const TABLE_COLUMNS: ColumnDefinition[] = [
+// 농장현황 테이블 컬럼 정의
+export const FARM_STATUS_COLUMNS: TableColumnSetting[] = [
   {
-    accessorKey: 'name',
-    header: '제품명',
+    accessorKey: 'henHouseName',
+    header: '계사명',
+    formatOptions: {
+      type: FormatterType.Default,
+    },
   },
   {
-    accessorKey: 'sales',
-    header: '매출',
-    formatter: (value: number) => value.toLocaleString(),
+    accessorKey: 'currentWeek',
+    header: '현재 주령',
+    formatOptions: {
+      type: FormatterType.Week,
+    },
   },
   {
-    accessorKey: 'profit',
-    header: '이익',
-    formatter: (value: number) => value.toLocaleString(),
+    accessorKey: 'species',
+    header: '품종',
   },
   {
-    accessorKey: 'growth',
-    header: '성장률',
-    formatter: (value: number) => `${value}%`,
+    accessorKey: 'chickCount',
+    header: '입추 수수',
+    formatOptions: {
+      type: FormatterType.Number,
+      unit: UnitType.Count,
+    },
   },
   {
-    accessorKey: 'gaugeValue',
-    header: '상태',
-    formatter: (value: number) => GaugeChart({ 
-      percentage: value,
-      showText: true,
-    }),
+    accessorKey: 'survivalRate',
+    header: '생존율',
+    formatter: (value: string) => {
+      // 새로운 GaugeChart 사용
+      return getGaugeChart(value);
+    },
+  },
+  {
+    accessorKey: 'temperature',
+    header: '온도',
+    formatOptions: {
+      type: FormatterType.Temperature,
+    },
+    formatter: (value: string, formatValue?: string) => {
+      // 새로운 GaugeChart 사용
+      return getGaugeChart(value, 
+        { formatValue, 
+          min: 10, 
+          max: 38, 
+          styleColors: { 
+            low: '#0000ff', 
+            medium: '#00cc00', 
+            high: '#ff4f4f' 
+          },
+          baseline: {
+            low: 19,
+            high: 25
+          },
+          reverseColor: false
+        });
+    },
+  },
+  {
+    accessorKey: 'humidity',
+    header: '습도',
+    formatOptions: {
+      type: FormatterType.Default,
+    },
+  },
+  {
+    accessorKey: 'layingRate',
+    header: 'HD산란율',
+    formatOptions: {
+      type: FormatterType.Default,
+    },
+  },
+  {
+    accessorKey: 'avgEggWeight',
+    header: '평균 난중',
+    formatOptions: {
+      type: FormatterType.Default,
+    },
+  },
+  {
+    accessorKey: 'dailyProduction',
+    header: '금일 생산량',
+    formatOptions: {
+      type: FormatterType.Number,
+      unit: UnitType.Egg,
+    },
   },
 ];
 
+function getGaugeChart(value: string, options?: {}) {
+  return React.createElement(GaugeChart, {
+    value: parseInt(value, 10),
+    ...options
+  });
+}

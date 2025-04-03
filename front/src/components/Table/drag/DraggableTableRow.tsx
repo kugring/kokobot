@@ -1,16 +1,12 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styled from 'styled-components';
+import { TableStyles } from 'types';
 
 interface DraggableTableRowProps {
     id: string;
     children: React.ReactNode;
-    $tableStyles: {
-        headerBackground: string;
-        headerHoverBackground: string;
-        rowHoverBackground: string;
-        borderColor: string;
-    };
+    $tableStyles: TableStyles;
 }
 
 const StyledTr = styled.tr<{ 
@@ -19,7 +15,6 @@ const StyledTr = styled.tr<{
     $transform?: string;
 }>`
     transform: ${props => props.$transform || 'none'};
-    opacity: ${props => props.$isDragging ? 0.5 : 1};
     z-index: ${props => props.$isDragging ? 1 : 0};
     position: relative;
     transition: transform 0.2s ease;

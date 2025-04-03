@@ -1,0 +1,62 @@
+[
+  {
+    "henHouseName": "3동",
+    "currentWeek": 120,
+    "species": "하이브라운",
+    "chickCount": 140000,
+    "survivalRate": "99%",
+    "temperature": 22,  
+    "humidity": 35,
+    "layingRate": "249~257",
+    "avgEggWeight": "64.6gm",
+    "dailyProduction": 250000
+  },
+  {
+    "henHouseName": "4동",
+    "currentWeek": 120,
+    "species": "하이브라운",
+    "chickCount": 140000,
+    "survivalRate": "99%",
+    "temperature": 25,  
+    "humidity": 35,
+    "layingRate": "249~257",
+    "avgEggWeight": "64.6gm",
+    "dailyProduction": 250000
+  },
+  {
+    "henHouseName": "1동",
+    "currentWeek": 120,
+    "species": "하이브라운",
+    "chickCount": 140000,
+    "survivalRate": "99%",
+    "temperature": 17,  
+    "humidity": 35,
+    "layingRate": "249~257",
+    "avgEggWeight": "64.6gm",
+    "dailyProduction": 250000
+  },
+  {
+    "henHouseName": "1동",
+    "currentWeek": 120,
+    "species": "하이브라운",
+    "chickCount": 140000,
+    "survivalRate": "99%",
+    "temperature": 27,  
+    "humidity": 35,
+    "layingRate": "249~257",
+    "avgEggWeight": "64.6gm",
+    "dailyProduction": 250000
+  },
+  {
+    "henHouseName": "4동",
+    "currentWeek": 120,
+    "species": "하이브라운",
+    "chickCount": 140000,
+    "survivalRate": "99%",
+    "temperature": 20,  
+    "humidity": 35,
+    "layingRate": "249~257",
+    "avgEggWeight": "64.6gm",
+    "dailyProduction": 250000
+  }
+] 

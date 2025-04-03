@@ -1,53 +1,88 @@
 import "react-circular-progressbar/dist/styles.css"
 import styled from "styled-components"
-import { calculateGaugeStatus } from "../../utils/gauge_utils"
-import { GaugeBaseline, GaugeStatusTexts } from "../../types/gaugeChart_type"
+import { calculateGaugeStatus } from "utils/gauge_utils"
+import { GaugeBaseline, GaugeStatusTexts } from "types"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { CIRCLE_RATIO, GAUGE_DEFAULT_PROPS } from "../../constants/char/gauge_constants"
+import { StyleColors } from "types/components"
 
 interface GaugeChartProps {
-    percentage: number
-    showText?: boolean
-    reverseColorScale?: boolean
+    value: number
+    min?: number
+    max?: number
+    formatValue?: string
+    reverseColor?: boolean
     baseline?: GaugeBaseline
     statusTexts?: GaugeStatusTexts
+    styleColors?: StyleColors
 }
-const size = 30;
-const width = `${size}px`;
-const height = `${size * 0.7}px`;
+const size = 30
+const width = `${size}px`
+const height = `${size * 0.7}px`
 
 const GaugeChart = ({
-    percentage,
-    showText = GAUGE_DEFAULT_PROPS.showText,
+    value,
+    min = 0,
+    max = 100,
+    formatValue,
     baseline = GAUGE_DEFAULT_PROPS.baseline,
     statusTexts = GAUGE_DEFAULT_PROPS.statusTexts,
-    reverseColorScale = GAUGE_DEFAULT_PROPS.reverseColorScale,
+    styleColors = GAUGE_DEFAULT_PROPS.styleColors,
+    reverseColor = GAUGE_DEFAULT_PROPS.reverseColor,
 }: GaugeChartProps) => {
-    const needleAngle = -111 + percentage * 2.3 * (1 - (percentage / 100) * 0.04)
-    const { color: gaugeColor, text: statusText } = calculateGaugeStatus(percentage, baseline, statusTexts, reverseColorScale)
+    // 상대적 백분율 계산 (min-max 범위에서 value의 위치)
+    const percentage = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
+
+    const needleAngle = -111 + percentage * 2.3 * (1 - (percentage / 100) * 0.04) // 값이 정확하진 않음
+    const { color: gaugeColor, text: statusText } = calculateGaugeStatus(value, styleColors, baseline, statusTexts, reverseColor)
+
+    // let addRotation = 0
+    // if (baseline.low < value && value < baseline.high) {
+    //     const minPercentage = (baseline.low - min) / (max - min)
+    //     addRotation = 220 * minPercentage
+    //     console.log(minPercentage)
+    // }
+
     return (
         <ChartContainer>
             <GaugeWrapper>
+                {/* 백그라운드용 고정된 원형 그래프 */}
+                <BackgroundGauge>
+                    <CircularProgressbar
+                        value={100}
+                        strokeWidth={24}
+                        circleRatio={CIRCLE_RATIO}
+                        styles={buildStyles({
+                            strokeLinecap: "butt",
+                            rotation: 250 / 360,
+                            pathTransitionDuration: 0,
+                            pathColor: "#eee",
+                            trailColor: "transparent",
+                        })}
+                    />
+                </BackgroundGauge>
+                
+                {/* 실제 값 표시용 원형 그래프 */}
                 <CircularProgressbar
                     value={percentage}
                     strokeWidth={24}
                     circleRatio={CIRCLE_RATIO}
                     styles={buildStyles({
                         strokeLinecap: "butt",
-                        rotation: 0.695,
+                        rotation: 250 / 360,
                         pathTransitionDuration: 1,
                         pathColor: gaugeColor,
-                        trailColor: "#eee",
+                        trailColor: "transparent",
                     })}
                 />
-                <NeedleContainer angle={needleAngle}>
+                <NeedleContainer $angle={needleAngle}>
                     <Needle color={gaugeColor} />
                     <NeedleCenter />
                 </NeedleContainer>
             </GaugeWrapper>
-            {showText && (
+            {formatValue && (
                 <StatusText color={gaugeColor}>
-                    {statusText} ({percentage}%)
+                    {statusText} ({formatValue})
                 </StatusText>
             )}
         </ChartContainer>
@@ -68,6 +103,7 @@ const GaugeWrapper = styled.div`
     height: ${width};
     overflow: visible;
     position: relative;
+    z-index: 2;
 
     .CircularProgressbar {
         width: 100%;
@@ -75,11 +111,11 @@ const GaugeWrapper = styled.div`
     }
 `
 
-const NeedleContainer = styled.div<{ angle: number }>`
+const NeedleContainer = styled.div<{ $angle: number }>`
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(${({ angle }) => angle}deg);
+    transform: translate(-50%, -50%) rotate(${({ $angle }) => $angle}deg);
     transition: transform 1s ease-in-out;
     width: 100%;
     height: 100%;
@@ -107,12 +143,18 @@ const NeedleCenter = styled.div`
     border-radius: 50%;
     z-index: 6;
 `
- 
+
 const StatusText = styled.span<{ color: string }>`
     display: flex;
     align-items: center;
-    width: 80px;
     color: ${(props) => props.color};
     font-weight: 500;
     font-size: ${` ${10 + size * 0.2}px`};
 `
+
+const BackgroundGauge = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+`;

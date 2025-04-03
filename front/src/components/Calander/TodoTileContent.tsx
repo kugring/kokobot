@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { CalendarTodo } from "../../types/calander_type"
+import { CalendarTodo } from "../../types/components/calander_type"
 import { TODO_INFO, TodoType } from "../../constants/calander_constants"
 import { getTodosForDate, getUniqueTodoTypes, getTodoTypeTitle } from "../../utils"
 

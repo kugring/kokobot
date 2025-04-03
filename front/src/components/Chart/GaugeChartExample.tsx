@@ -4,9 +4,9 @@ import styled from "styled-components"
 const GaugeChartExample = () => {
     return (
         <Container>
-            <GaugeChart percentage={20} />
-            <GaugeChart percentage={45} />
-            <GaugeChart percentage={90} />
+            <GaugeChart value={20} />
+            <GaugeChart value={70} min={50} max={100} />
+            <GaugeChart value={220000} min={0} max={300000} />
         </Container>
     )
 }

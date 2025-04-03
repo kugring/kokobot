@@ -1,15 +1,13 @@
 import styled from "styled-components"
-import ChartComponent from './ChartComponent';
-import { CHART_COLORS, sampleData } from '../../constants/table_constants';
 
 const ChartExample = () => {
     return (
         <Container>
-            <ChartComponent
-                data={sampleData}
-                chartColors={CHART_COLORS}
+            {/* <ChartComponent
+                data={}
+                chartColors={}
                 chartTitle="매출 및 이익 현황"
-            />
+            /> */}
         </Container>
     );
 };

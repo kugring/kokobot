@@ -2,7 +2,7 @@ import "react-calendar/dist/Calendar.css"
 import styled from "styled-components"
 import Calendar from "react-calendar"
 import { useState } from "react"
-import { CalendarTodo } from "../../types/calander_type"
+import { CalendarTodo } from "../../types/components/calander_type"
 import { TodoTileContent } from "./TodoTileContent"
 import { formatShortWeekday, formatDay, formatMonthYear } from "../../utils/calander_util"
 

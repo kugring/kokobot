@@ -1,28 +1,25 @@
 import styled from "styled-components"
+import { DEFAULT_TABLE_STYLES } from "constants/table_constants";
 import { useState, useRef } from "react"
+import { TableColumnSetting } from "types";
 import { createTableColumns } from "../../utils/table_utils"
-import { DataItem, ColumnDefinition } from "../../types/index"
 import { DraggableTableRow, DraggableTableHeader } from './drag/index';
 import { arrayMove, SortableContext, verticalListSortingStrategy, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 import { useReactTable, getCoreRowModel, flexRender, getSortedRowModel, SortingState, OnChangeFn } from "@tanstack/react-table"
 import { DndContext, rectIntersection, PointerSensor, useSensor, useSensors, DragEndEvent, DragOverlay, Modifier } from '@dnd-kit/core';
+import { TableStyles } from "types/components/table_type";
 
 interface TableComponentProps {
-    data: DataItem[];
-    columns: ColumnDefinition[];
-    tableStyles: {
-        headerBackground: string;
-        headerHoverBackground: string;
-        rowHoverBackground: string;
-        borderColor: string;
-    };
-    tableTitle: string;
+    data: any;
+    columns: TableColumnSetting[];
+    tableTitle?: string;
+    tableStyles?: TableStyles;
 }
 
 const TableComponent = ({
     data: initialData,
     columns: initialColumns,
-    tableStyles,
+    tableStyles = DEFAULT_TABLE_STYLES,
     tableTitle
 }: TableComponentProps) => {
     const [sorting, setSorting] = useState<SortingState>([])
@@ -31,6 +28,7 @@ const TableComponent = ({
     const [activeId, setActiveId] = useState<string | null>(null)
     const tableColumns = createTableColumns(columns)
     const headerRef = useRef<HTMLTableSectionElement>(null);
+    const tableColors = tableStyles || DEFAULT_TABLE_STYLES;
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -56,9 +54,9 @@ const TableComponent = ({
                 const newIndex = columns.findIndex((col) => `header-${col.accessorKey}` === over?.id);
                 setColumns(arrayMove(columns, oldIndex, newIndex));
             } else {
-                setData((items) => {
-                    const oldIndex = items.findIndex((item) => item.name === active.id);
-                    const newIndex = items.findIndex((item) => item.name === over?.id);
+                setData((items: any) => {
+                    const oldIndex = items.findIndex((item: any) => item.name === active.id);
+                    const newIndex = items.findIndex((item: any) => item.name === over?.id);
                     return arrayMove(items, oldIndex, newIndex);
                 });
             }
@@ -97,7 +95,7 @@ const TableComponent = ({
                 autoScroll={false}
                 modifiers={[restrictToXAxis]}
             >
-                <Table $tableStyles={tableStyles}>
+                <Table $tableStyles={tableColors}>
                     <SortableContext
                         items={columns.map(col => `header-${col.accessorKey}`)}
                         strategy={horizontalListSortingStrategy}
@@ -119,17 +117,17 @@ const TableComponent = ({
                         </thead>
                     </SortableContext>
                     <SortableContext
-                        items={data.map(item => item.name)}
+                        items={data.map((item: any) => item.name)}
                         strategy={verticalListSortingStrategy}
                     >
                         <tbody>
-                            {table.getRowModel().rows.map((row) => (
+                            {table.getRowModel().rows.map((row: any) => (
                                 <DraggableTableRow
                                     key={row.id}
                                     id={row.original.name}
                                     $tableStyles={tableStyles}
                                 >
-                                    {row.getVisibleCells().map((cell) => (
+                                    {row.getVisibleCells().map((cell: any) => (
                                         <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                                     ))}
                                 </DraggableTableRow>
@@ -170,7 +168,7 @@ const TableTitle = styled.h2`
     font-size: 1.5rem;
 `
 
-const Table = styled.table<{ $tableStyles: TableComponentProps['tableStyles'] }>`
+const Table = styled.table<{ $tableStyles: TableStyles }>`
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
@@ -179,27 +177,27 @@ const Table = styled.table<{ $tableStyles: TableComponentProps['tableStyles'] }>
     td {
         padding: 12px;
         text-align: center;
-        border-bottom: 1px solid ${props => props.$tableStyles.borderColor};
+        border-bottom: 1px solid ${props => props.$tableStyles?.borderColor};
         vertical-align: middle;
     }
 
     th {
-        background-color: ${props => props.$tableStyles.headerBackground};
+        background-color: ${props => props.$tableStyles?.headerBackground};
         font-weight: 600;
         color: #333;
         cursor: pointer;
 
         &:hover {
-            background-color: ${props => props.$tableStyles.headerHoverBackground};
+            background-color: ${props => props.$tableStyles?.headerHoverBackground};
         }
     }
 
     tr:hover {
-        background-color: ${props => props.$tableStyles.rowHoverBackground};
+        background-color: ${props => props.$tableStyles?.rowHoverBackground};
     }
 `
 
-const DragOverlayItem = styled.div<{ $tableStyles: TableComponentProps['tableStyles'] }>`
+const DragOverlayItem = styled.div<{ $tableStyles: TableStyles }>`
     background: ${props => props.$tableStyles.headerBackground};
     padding: 12px;
     border: 1px solid ${props => props.$tableStyles.borderColor};

@@ -1,14 +1,16 @@
 import styled from "styled-components"
 import TableComponent from './TableComponent';
-import { TABLE_STYLES, TABLE_COLUMNS, sampleData } from '../../constants/table_constants';
+import farmStatusData from 'mocks/farm-status.json';
+import { FARM_STATUS_COLUMNS } from 'constants/table_constants';
 
 const TableExample = () => {
+    const data = farmStatusData;
+
     return (
         <Container>
             <TableComponent
-                data={sampleData}
-                columns={TABLE_COLUMNS}
-                tableStyles={TABLE_STYLES}
+                data={data}
+                columns={FARM_STATUS_COLUMNS}
                 tableTitle="상세 데이터"
             />
         </Container>

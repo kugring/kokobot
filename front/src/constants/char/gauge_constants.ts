@@ -5,26 +5,32 @@ export const CIRCLE_RATIO = 220 / 360
 
 // 기본 색상 정의
 export const DEFAULT_COLORS = {
-    safe: "#4CAF50", // 녹색
-    warning: "#FFC107", // 노란색
-    danger: "#F44336", // 빨간색
-}
+    danger: "#ff0000",
+    warning: "#ffaa00",
+    safe: "#00cc00",
+} as const
 
 export const GAUGE_DEFAULT_BASELINE: GaugeBaseline = {
-    warning: 30,
-    danger: 60,
+    high: 30,
+    medium: 60,
+    low: 90,
 } as const
 
 
 export const GAUGE_DEFAULT_STATUS_TEXTS: GaugeStatusTexts = {
-    danger: '위험',
-    warning: '경고',
-    safe: '정상'
+    high: '높음',
+    medium: '중간',
+    low: '낮음'
 } as const
 
 export const GAUGE_DEFAULT_PROPS = {
     showText: true,
-    reverseColorScale: true,
+    reverseColor: true,
     baseline: GAUGE_DEFAULT_BASELINE,
-    statusTexts: GAUGE_DEFAULT_STATUS_TEXTS
+    statusTexts: GAUGE_DEFAULT_STATUS_TEXTS,
+    styleColors: {
+        low: DEFAULT_COLORS.danger,
+        medium: DEFAULT_COLORS.warning,
+        high: DEFAULT_COLORS.safe,
+    }
 } as const

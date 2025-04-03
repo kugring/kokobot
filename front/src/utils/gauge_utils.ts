@@ -1,26 +1,30 @@
-import { DEFAULT_COLORS } from "../constants/char/gauge_constants";
-import { GaugeBaseline, GaugeStatusTexts } from "../types/gaugeChart_type";
+import { GaugeBaseline, GaugeStatusTexts, StyleColors } from "../types/components/gaugeChart_type";
 
-interface GaugeStatus {
-    color: string;
-    text: string;
-}
-
-export const calculateGaugeStatus = ( 
-    percentage: number,
+export const calculateGaugeStatus = (
+    value: number,
+    styleColors: StyleColors,
     baseline: GaugeBaseline,
     statusTexts: GaugeStatusTexts,
-    reverseColorScale: boolean
-): GaugeStatus => {
-    if (reverseColorScale) {
-        // 낮을수록 위험한 경우
-        if (percentage <= baseline.warning) return { color: DEFAULT_COLORS.danger, text: statusTexts.danger };
-        if (percentage <= baseline.danger) return { color: DEFAULT_COLORS.warning, text: statusTexts.warning };
-        return { color: DEFAULT_COLORS.safe, text: statusTexts.safe };
+    reverseColor: boolean = false
+) => {
+    // 값이 min과 max 사이의 어느 위치에 있는지 퍼센트로 계산
+    const status = value < baseline.low ? 'low' : value > baseline.high ? 'high' : 'medium';
+
+    // 퍼센트에 따라 상태 결정
+    if (status === 'low') {
+        return {
+            color: reverseColor ? styleColors.high : styleColors.low,
+            text: statusTexts.low
+        };
+    } else if (status === 'medium') {
+        return {
+            color: styleColors.medium,
+            text: statusTexts.medium
+        };
     } else {
-        // 높을수록 위험한 경우
-        if (percentage >= baseline.danger) return { color: DEFAULT_COLORS.danger, text: statusTexts.danger };
-        if (percentage >= baseline.warning) return { color: DEFAULT_COLORS.warning, text: statusTexts.warning };
-        return { color: DEFAULT_COLORS.safe, text: statusTexts.safe };
+        return {
+            color: reverseColor ? styleColors.low : styleColors.high,
+            text: statusTexts.high
+        };
     }
 }; 
