@@ -24,8 +24,8 @@ export const GAUGE_DEFAULT_STATUS_TEXTS: GaugeStatusTexts = {
 } as const
 
 export const GAUGE_DEFAULT_PROPS = {
-    showText: true,
-    reverseColor: true,
+    showText: false,
+    reverseColor: false,
     baseline: GAUGE_DEFAULT_BASELINE,
     statusTexts: GAUGE_DEFAULT_STATUS_TEXTS,
     styleColors: {

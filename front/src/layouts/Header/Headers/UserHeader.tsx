@@ -77,6 +77,7 @@ const HeaderContainer = styled.header<{ $isClosed: boolean }>`
     height: ${(props) => (props.$isClosed ? "32px" : "190px")};
     background-color: #ebf2ff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: content-box;
     font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     transition: all 0.3s ease;

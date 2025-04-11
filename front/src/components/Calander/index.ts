@@ -1,6 +1,5 @@
 import CalendarComponent from './Calander';
-import CalendarExample from './CalendarExample';
 
 // CalendarTodo 타입 export
-export { CalendarComponent, CalendarExample };
+export { CalendarComponent };
 export default CalendarComponent; 

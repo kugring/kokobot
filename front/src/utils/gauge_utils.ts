@@ -1,4 +1,6 @@
+import React from "react";
 import { GaugeBaseline, GaugeStatusTexts, StyleColors } from "../types/components/gaugeChart_type";
+import GaugeChart from "components/Chart/GaugeChart";
 
 export const calculateGaugeStatus = (
     value: number,
@@ -28,3 +30,10 @@ export const calculateGaugeStatus = (
         };
     }
 }; 
+
+export function getGaugeChart(value: string, options?: {}) {
+    return React.createElement(GaugeChart, {
+      value: parseInt(value, 10),
+      ...options
+    });
+  }

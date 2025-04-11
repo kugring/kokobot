@@ -1,13 +1,13 @@
 import { RouteInfo } from "./route_info";
 import { FarmStatus } from "./interface";
 import { FormatterType, UnitType, UnitPosition, DateFormatType } from "./enums";
-import { CalendarTodo, TableColumnSetting, FormatOptions, GaugeBaseline, GaugeStatusTexts, TableStyles } from "./components";
+import { CalendarTodo, TableColumnSetting, FormatOptions, GaugeBaseline, GaugeStatusTexts, StyleColors } from "./components";
 
 // 기존 타입들을 내보내기
-export type { 
+export type {   
     RouteInfo, 
-    FarmStatus, 
-    TableStyles,
+    FarmStatus,         
+    StyleColors,
     CalendarTodo, 
     GaugeBaseline, 
     FormatOptions, 

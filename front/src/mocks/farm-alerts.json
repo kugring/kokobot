@@ -1,0 +1,82 @@
+[
+    {
+      "id": 1,
+      "farmName": "한밭농장",
+      "address": "대전 동구 계족로 151",
+      "temperature": 38.5,
+      "humidity": 42,
+      "occurredAt": "2023-08-31T13:00:00",
+      "issue": "온도이상발생",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "farmName": "청주양계",
+      "address": "충북 청주시 청원구 내수읍 내수로 123",
+      "temperature": 15.2,
+      "humidity": 65,
+      "occurredAt": "2023-09-01T08:30:00",
+      "issue": "온도저하발생",
+      "status": "active"
+    },
+    {
+      "id": 3,
+      "farmName": "대구계란",
+      "address": "대구 달성군 구지면 창리로 456",
+      "temperature": 32.7,
+      "humidity": 28,
+      "occurredAt": "2023-09-02T15:45:00",
+      "issue": "습도저하발생",
+      "status": "active"
+    },
+    {
+      "id": 4,
+      "farmName": "부산양계",
+      "address": "부산 강서구 생곡동 789",
+      "temperature": 26.3,
+      "humidity": 35,
+      "occurredAt": null,
+      "issue": null,
+      "status": "normal"
+    },
+    {
+      "id": 5,
+      "farmName": "경남계란",
+      "address": "경남 창원시 의창구 동읍 234",
+      "temperature": 27.1,
+      "humidity": 38,
+      "occurredAt": null,
+      "issue": null,
+      "status": "normal"
+    },
+    {
+      "id": 6,
+      "farmName": "전남양계",
+      "address": "전남 나주시 봉황면 567",
+      "temperature": 24.8,
+      "humidity": 45,
+      "occurredAt": null,
+      "issue": null,
+      "status": "normal"
+    },
+    {
+      "id": 7,
+      "farmName": "제주계란",
+      "address": "제주 서귀포시 안덕면 890",
+      "temperature": 23.5,
+      "humidity": 52,
+      "occurredAt": null,
+      "issue": null,
+      "status": "normal"
+    },
+    {
+      "id": 8,
+      "farmName": "강원양계",
+      "address": "강원 원주시 문막읍 345",
+      "temperature": 22.1,
+      "humidity": 48,
+      "occurredAt": null,
+      "issue": null,
+      "status": "normal"
+    }
+  ]

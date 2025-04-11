@@ -26,7 +26,12 @@ const LayoutContainer = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  padding: 20px;
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  width: 100dvw;
+  margin: 0 auto;
+  padding: 20px 0;
 `;
 
 export default BaseLayout; 

@@ -1,5 +1,5 @@
 import BaseLayout from '../../layouts/BaseLayout'
-import TableExample from '../../components/Table/TableExample'
+import TableExample from '../../components/Example/TableExample'
 const Table = () => {
   return (
     <BaseLayout>

@@ -1,4 +1,4 @@
-import GaugeChart from "./GaugeChart"
+import GaugeChart from "../Chart/GaugeChart"
 import styled from "styled-components"
 
 const GaugeChartExample = () => {

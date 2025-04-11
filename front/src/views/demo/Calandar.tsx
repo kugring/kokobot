@@ -1,4 +1,4 @@
-import { CalendarExample } from "../../components/Calander"
+import CalendarExample from "../../components/Example/CalendarExample"
 import BaseLayout from "../../layouts/BaseLayout"
 const Calandar = () => {
     return (

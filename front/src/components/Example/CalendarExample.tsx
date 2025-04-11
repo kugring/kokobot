@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import CalendarComponent from './Calander';
+import CalendarComponent from '../Calander';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];

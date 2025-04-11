@@ -34,8 +34,9 @@ export enum UnitPosition {
 
 // 날짜 포맷 enum
 export enum DateFormatType {
-  YYYY_MM_DD = 'YYYY-MM-DD',               // 2023-01-01
-  YYYY_MM_DD_HH_MM = 'YYYY-MM-DD HH:mm',   // 2023-01-01 13:30
+  YY_MM_DD = 'YY-MM-DD',                   // 25-04-11
+  YYYY_MM_DD = 'YYYY-MM-DD',               // 2025-04-11
+  YYYY_MM_DD_HH_MM = 'YYYY-MM-DD HH:mm',   // 2025-04-11 13:30
   MM_DD = 'MM-DD',                         // 01-01
   HH_MM = 'HH:mm',                         // 13:30
 }

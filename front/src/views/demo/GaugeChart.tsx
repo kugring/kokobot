@@ -1,6 +1,6 @@
 import React from 'react'
-import BaseLayout from '../../layouts/BaseLayout'  
-import GaugeChartExample from '../../components/Chart/GaugeChartExample'   
+import BaseLayout from 'layouts/BaseLayout'  
+import GaugeChartExample from 'components/Example/GaugeChartExample'   
 
 
 const GaugeChart = () => {

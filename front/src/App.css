@@ -1,3 +1,64 @@
+:root {
+  /* 팔레트 기본 색상: 초록-파랑-보라 그라데이션 */
+  /* 초록 계열 (민트) */
+  --color-mint-100: #ebfff3; /* 가장 연한 민트 */
+  --color-mint-200: #d4f7e8;
+  --color-mint-300: #b4edd9;
+  --color-mint-400: #8adbc7;
+  --color-mint-500: #5fc8b4; /* 진한 민트 */
+  
+  /* 청록 계열 (틸) */
+  --color-teal-100: #e1f5f5; /* 연한 틸 */
+  --color-teal-200: #bfeaec;
+  --color-teal-300: #94d8dc;
+  --color-teal-400: #6cc4cb;
+  --color-teal-500: #48adb5; /* 진한 틸 */
+  
+  /* 하늘 계열 (스카이) */
+  --color-sky-100: #e2f4fd; /* 연한 하늘 */
+  --color-sky-200: #c3e5f7;
+  --color-sky-300: #9fd0ed;
+  --color-sky-400: #73b8e0;
+  --color-sky-500: #4a9ed2; /* 진한 하늘 */
+  
+  /* 파랑 계열 */
+  --color-blue-100: #e1ecfd; /* 연한 파랑 */
+  --color-blue-200: #c2d7f6;
+  --color-blue-300: #9dbceb;
+  --color-blue-400: #7599db;
+  --color-blue-500: #5276ca; /* 진한 파랑 */
+  
+  /* 남색 계열 (인디고) */
+  --color-indigo-50: #f8faff; /* 매우 연한 남색 */
+  --color-indigo-75: #f5f8fe; /* 아주 연한 남색 */
+  --color-indigo-100: #f0f4fe; /* 가장 연한 남색 */
+  --color-indigo-200: #e2e6f9;
+  --color-indigo-300: #c8d0ef;
+  --color-indigo-400: #a2aee3;
+  --color-indigo-500: #7a87d3; /* 진한 남색 */
+  
+  /* 보라 계열 (퍼플) */
+  --color-purple-100: #ede3ff; /* 연한 보라 */
+  --color-purple-200: #d7c5f8;
+  --color-purple-300: #bda5ed;
+  --color-purple-400: #a184df;
+  --color-purple-500: #8561cf; /* 진한 보라 */
+  
+  /* 진보라 계열 (바이올렛) */
+  --color-violet-100: #f0e3ff; /* 연한 진보라 */
+  --color-violet-200: #dec3fa;
+  --color-violet-300: #c79ff0;
+  --color-violet-400: #af78e3;
+  --color-violet-500: #944bd3; /* 진한 진보라 */
+
+  /* 의미적 변수 (테마에 활용) */
+  --theme-header-background: #fff;
+  --theme-background-row-hover: var(--color-indigo-200);
+  --theme-background-even-row: var(--color-indigo-100);
+
+  
+}
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,10 +66,42 @@ body {
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-y: scroll;
   }
   
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
+  }
+  
+  /* 스크롤바 스타일링 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
+  /* 전체 페이지 컨테이너 */
+  #root {
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* 모든 컨테이너 요소에 box-sizing 적용 */
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
   

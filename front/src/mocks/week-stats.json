@@ -1,0 +1,50 @@
+{
+  "House-A": [
+    {
+      "week": "20주",
+      "chickens": 18758,
+      "eggs": 9801
+    },
+    {
+      "week": "30주",
+      "chickens": 16779,
+      "eggs": 10813
+    }
+  ],
+  "House-B": [
+    {
+      "week": "40주",
+      "chickens": 18504,
+      "eggs": 8511
+    },
+    {
+      "week": "50주",
+      "chickens": 18724,
+      "eggs": 7281
+    }
+  ],
+  "House-C": [
+    {
+      "week": "60주",
+      "chickens": 20113,
+      "eggs": 9109
+    },
+    {
+      "week": "70주",
+      "chickens": 19889,
+      "eggs": 10905
+    }
+  ],
+  "House-D": [
+    {
+      "week": "80주",
+      "chickens": 21272,
+      "eggs": 11024
+    },
+    {
+      "week": "90주",
+      "chickens": 18873,
+      "eggs": 9729
+    }
+  ]
+} 

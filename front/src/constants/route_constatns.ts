@@ -20,13 +20,13 @@ export const MENU_STRUCTURE: MenuSection[] = [
         title: "사육 관리",
         description: "닭의 입추부터 성장까지 전 과정을 관리합니다. 개체 이력, 부화, 동별 관리, 건강 상태, 환경 관리, 백신/약품 투여 등을 포함합니다.",
         items: [
+            { path: "/breeding/status", title: "농장 현황", icon: "📊" },
             { path: "/breeding/chick", title: "입추 관리", icon: "🐣" },
             { path: "/breeding/history", title: "개체 이력 관리", icon: "📋" },
             { path: "/breeding/hatching", title: "부화 관리", icon: "📦" },
             { path: "/breeding/building", title: "동별 관리", icon: "🐓" },
-            { path: "/breeding/health", title: "임상 및 질병 관리", icon: "💊" },
             { path: "/breeding/environment", title: "환경 관리", icon: "🌡" },
-            { path: "/breeding/vaccine", title: "백신/약품 투여 관리", icon: "🧪" }
+            { path: "/breeding/vaccine", title: "백신/약품 투여 관리", icon: "💊" }
         ]
     },
     {

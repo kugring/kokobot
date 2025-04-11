@@ -3,8 +3,10 @@ import { Navigate } from "react-router-dom"
 import Table from "../views/demo/Table"
 import Calandar from "../views/demo/Calandar"
 import Chart from "../views/demo/Chart"
-import GaugeChart from "../views/demo/GaugeChart"
 import Test from "../views/Test"
+import Status from "../views/breeding/Status"
+import Vaccine from "../views/breeding/Vaccine"
+import Analysis from "views/production/Analysis"
 // // 인증 관련 라우트
 // const authRoutes: RouteObject[] = [
 //   {
@@ -52,8 +54,29 @@ const testRoutes: RouteObject[] = [
 // GaugeChart 라우트
 const gaugeChartRoutes: RouteObject[] = [
     {
-        path: "/gauge-chart",
-        children: [{ path: "", element: <GaugeChart /> }],
+        path: "/calandar",
+        children: [{ path: "", element: <Calandar /> }],
+    },
+]
+
+// Breeding 라우트
+const   breedingRoutes: RouteObject[] = [
+    {   
+            path: "/breeding",
+        children: [
+            { path: "status", element: <Status /> },
+            { path: "vaccine", element: <Vaccine /> },
+        ]
+    },
+]
+
+// Production 라우트
+const   productionRoutes: RouteObject[] = [
+    {   
+        path: "/production",
+        children: [
+            { path: "analysis", element: <Analysis /> },
+        ]
     },
 ]
 
@@ -61,10 +84,18 @@ const gaugeChartRoutes: RouteObject[] = [
 export const mainRoutes: RouteObject[] = [
     {
         path: "/",
-        element: <Navigate to="test" replace />,
+        element: <Navigate to="/test" replace />,
     },
     {
         element: "",
-        children: [...todoRoutes, ...tableRoutes, ...chartRoutes, ...testRoutes, ...gaugeChartRoutes],
+        children: [
+            ...todoRoutes, 
+            ...testRoutes, 
+            ...tableRoutes, 
+            ...chartRoutes, 
+            ...breedingRoutes,
+            ...productionRoutes,
+            ...gaugeChartRoutes, 
+        ],
     },
 ]

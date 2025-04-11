@@ -1,6 +1,6 @@
 import React from 'react'
 import BaseLayout from '../../layouts/BaseLayout'
-import ChartExample from '../../components/Chart/BarChartExample'
+import ChartExample from '../../components/Example/BarChartExample'
 
 const Chart = () => {
   return (

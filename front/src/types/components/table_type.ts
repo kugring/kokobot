@@ -15,20 +15,9 @@ export interface TableColumnSetting {
     accessorKey: string
     header: string
     formatOptions?: FormatOptions // 포맷 옵션
-    formatter?: (value: any, formatValue?: string) => ReactNode
+    chart?: (value: any, formatValue?: string) => ReactNode
     width?: string | number
     align?: "left" | "center" | "right"
 }
 
-// 테이블 스타일 정의 타입
-export interface TableStyles {
-    headerBackground?: string;     // 헤더 배경색
-    headerHoverBackground?: string; // 헤더 호버 시 배경색
-    rowHoverBackground?: string;    // 행 호버 시 배경색
-    borderColor?: string;           // 테이블 테두리 색상
-    cellPadding?: string;          // 셀 패딩 (옵션)
-    fontSize?: string;             // 폰트 크기 (옵션)
-    textColor?: string;            // 텍스트 색상 (옵션)
-    headerTextColor?: string;      // 헤더 텍스트 색상 (옵션)
-}
 

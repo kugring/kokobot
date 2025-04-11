@@ -1,20 +1,19 @@
 import "react-circular-progressbar/dist/styles.css"
 import styled from "styled-components"
 import { calculateGaugeStatus } from "utils/gauge_utils"
-import { GaugeBaseline, GaugeStatusTexts } from "types"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
-import { CIRCLE_RATIO, GAUGE_DEFAULT_PROPS } from "../../constants/char/gauge_constants"
-import { StyleColors } from "types/components"
+import { CIRCLE_RATIO, GAUGE_DEFAULT_PROPS } from "../../constants/chart/gauge_constants"
+import { GaugeBaseline, GaugeStatusTexts, StyleColors } from "types"
 
 interface GaugeChartProps {
-    value: number
     min?: number
     max?: number
+    value: number
     formatValue?: string
     reverseColor?: boolean
     baseline?: GaugeBaseline
-    statusTexts?: GaugeStatusTexts
     styleColors?: StyleColors
+    statusTexts?: GaugeStatusTexts
 }
 const size = 30
 const width = `${size}px`
@@ -34,16 +33,9 @@ const GaugeChart = ({
     const percentage = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
 
     const needleAngle = -111 + percentage * 2.3 * (1 - (percentage / 100) * 0.04) // 값이 정확하진 않음
-    const { color: gaugeColor, text: statusText } = calculateGaugeStatus(value, styleColors, baseline, statusTexts, reverseColor)
+    // const { color: gaugeColor, text: statusText } = calculateGaugeStatus(value, styleColors, baseline, statusTexts, reverseColor)
+    const { color: gaugeColor } = calculateGaugeStatus(value, styleColors, baseline, statusTexts, reverseColor)
 
-    let addRotation = 0
-    let addPercentage = 0
-    if (baseline.low < value && value < baseline.high) {
-        const minPercentage = (baseline.low - min) / (max - min)
-        addRotation = 220 * minPercentage
-        addPercentage = minPercentage
-    }
-    const test = percentage - addPercentage
     return (
         <ChartContainer>
             <GaugeWrapper>
@@ -62,32 +54,30 @@ const GaugeChart = ({
                         })}
                     />
                 </BackgroundGauge>
-
                 {/* 실제 값 표시용 원형 그래프 */}
                 <ValueGauge>
                     <CircularProgressbar
-                        value={test}
+                        value={percentage}
                         strokeWidth={24}
                         circleRatio={CIRCLE_RATIO}
                         styles={buildStyles({
                             strokeLinecap: "butt",
-                            rotation: 250 / 360 + (addRotation / 360),
+                            rotation: 250 / 360 ,
                             pathTransitionDuration: 1,
                             pathColor: gaugeColor,
                             trailColor: "transparent",
                         })}
                     />
                 </ValueGauge>
-
-                <NeedleContainer $angle={needleAngle + addRotation}>
+                <NeedleContainer $angle={needleAngle}>
                     <Needle color={gaugeColor} />
                     <NeedleCenter />
                 </NeedleContainer>
-                
             </GaugeWrapper>
             {formatValue && (
                 <StatusText color={gaugeColor}>
-                    {statusText} ({formatValue})
+                    {/* {statusText} ({formatValue}) */}
+                    {formatValue}
                 </StatusText>
             )}
         </ChartContainer>
@@ -124,6 +114,7 @@ const NeedleContainer = styled.div<{ $angle: number }>`
     transition: transform 1s ease-in-out;
     width: 100%;
     height: 100%;
+    z-index: 4;
 `
 
 const Needle = styled.div`

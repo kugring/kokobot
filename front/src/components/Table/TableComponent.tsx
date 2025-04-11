@@ -1,217 +1,210 @@
 import styled from "styled-components"
-import { DEFAULT_TABLE_STYLES } from "constants/table_constants";
-import { useState, useRef } from "react"
-import { TableColumnSetting } from "types";
-import { createTableColumns } from "../../utils/table_utils"
-import { DraggableTableRow, DraggableTableHeader } from './drag/index';
-import { arrayMove, SortableContext, verticalListSortingStrategy, horizontalListSortingStrategy } from '@dnd-kit/sortable';
-import { useReactTable, getCoreRowModel, flexRender, getSortedRowModel, SortingState, OnChangeFn } from "@tanstack/react-table"
-import { DndContext, rectIntersection, PointerSensor, useSensor, useSensors, DragEndEvent, DragOverlay, Modifier } from '@dnd-kit/core';
-import { TableStyles } from "types/components/table_type";
+import { useState } from "react"
+import { createTableColumns, createTableFilter } from "utils/table_utils"
+import { TableColumnSetting } from "types"
+import { useReactTable, getCoreRowModel, flexRender, getSortedRowModel, SortingState, OnChangeFn, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table"
+import Pagination from "../Pagination/Pagination"
+import SearchInputBox from "components/SearchInputBox/SearchInputBox"
 
 interface TableComponentProps {
-    data: any;
-    columns: TableColumnSetting[];
-    tableTitle?: string;
-    tableStyles?: TableStyles;
+    title: string
+    data: any
+    columns: TableColumnSetting[]
+    limit?: number
 }
 
-const TableComponent = ({
-    data: initialData,
-    columns: initialColumns,
-    tableStyles = DEFAULT_TABLE_STYLES,
-    tableTitle
-}: TableComponentProps) => {
-    const [sorting, setSorting] = useState<SortingState>([])
-    const [data, setData] = useState(initialData)
-    const [columns, setColumns] = useState(initialColumns)
-    const [activeId, setActiveId] = useState<string | null>(null)
+const PAGE_SIZE_OPTIONS = [5, 10, 25, 50, 100]
+
+const TableComponent = ({ title, data: initialData, columns: initialColumns, limit = 5 }: TableComponentProps) => {
+    const [data] = useState(initialData)
+    const [columns] = useState(initialColumns)
     const tableColumns = createTableColumns(columns)
-    const headerRef = useRef<HTMLTableSectionElement>(null);
-    const tableColors = tableStyles || DEFAULT_TABLE_STYLES;
-
-    const sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 5,
-                delay: 0,
-                tolerance: 5
-            }
-        })
-    );
-
-    const handleDragStart = (event: any) => {
-        setActiveId(String(event.active.id));
-    };
-
-    const handleDragEnd = (event: DragEndEvent) => {
-        setActiveId(null);
-        const { active, over } = event;
-
-        if (active.id !== over?.id) {
-            if (String(active.id).startsWith('header-')) {
-                const oldIndex = columns.findIndex((col) => `header-${col.accessorKey}` === active.id);
-                const newIndex = columns.findIndex((col) => `header-${col.accessorKey}` === over?.id);
-                setColumns(arrayMove(columns, oldIndex, newIndex));
-            } else {
-                setData((items: any) => {
-                    const oldIndex = items.findIndex((item: any) => item.name === active.id);
-                    const newIndex = items.findIndex((item: any) => item.name === over?.id);
-                    return arrayMove(items, oldIndex, newIndex);
-                });
-            }
-        }
-    };
-
-    const restrictToXAxis: Modifier = ({ active, transform }: { active: any, transform: any }) => {
-        if (active && String(active.id).startsWith('header-')) {
-            return {
-                ...transform,
-                y: 0
-            };
-        }
-        return transform;
-    };
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [globalFilter, setGlobalFilter] = useState("")
+    const [limitNum, setLimitNum] = useState(limit)
+    const [pageIndex, setPageIndex] = useState(0)
 
     const table = useReactTable({
         data,
         columns: tableColumns,
         state: {
             sorting,
+            globalFilter,
+            pagination: {
+                pageSize: limitNum,
+                pageIndex,
+            },
         },
         onSortingChange: setSorting as OnChangeFn<SortingState>,
+        onGlobalFilterChange: setGlobalFilter,
+        onPaginationChange: (updater) => {
+            if (typeof updater === "function") {
+                const newState = updater({ pageIndex, pageSize: limitNum })
+                setPageIndex(newState.pageIndex)
+                setLimitNum(newState.pageSize)
+            }
+        },
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        globalFilterFn: createTableFilter(columns),
     })
 
     return (
         <TableCard>
-            <TableTitle>{tableTitle}</TableTitle>
-            <DndContext
-                sensors={sensors}
-                collisionDetection={rectIntersection}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-                autoScroll={false}
-                modifiers={[restrictToXAxis]}
-            >
-                <Table $tableStyles={tableColors}>
-                    <SortableContext
-                        items={columns.map(col => `header-${col.accessorKey}`)}
-                        strategy={horizontalListSortingStrategy}
-                    >
-                        <thead ref={headerRef}>
-                            {table.getHeaderGroups().map((headerGroup) => (
-                                <tr key={headerGroup.id}>
-                                    {headerGroup.headers.map((header) => (
-                                        <DraggableTableHeader
-                                            key={header.id}
-                                            id={`header-${header.column.id}`}
-                                            $tableStyles={tableStyles}
-                                        >
-                                            {flexRender(header.column.columnDef.header, header.getContext())}
-                                        </DraggableTableHeader>
-                                    ))}
-                                </tr>
+            <HeaderBox>
+                <TitleBox>
+                    <Title>{title}</Title>
+                    <SearchInputBox 
+                        value={globalFilter} 
+                        onChange={setGlobalFilter} 
+                        placeholder="전체 검색" 
+                        delay={300} 
+                    />
+                </TitleBox>
+            </HeaderBox>
+
+            <Table>
+                <thead>
+                    <tr>
+                        {table.getHeaderGroups()[0].headers.map((header) => (
+                            <HeaderTitle key={header.id} onClick={header.column.getToggleSortingHandler()}>
+                                <HeaderText>
+                                    {flexRender(header.column.columnDef.header, header.getContext())}
+                                    <SortIcon>
+                                        {{
+                                            asc: " 🔼",
+                                            desc: " 🔽",
+                                        }[header.column.getIsSorted() as string] ?? null}
+                                    </SortIcon>
+                                </HeaderText>
+                            </HeaderTitle>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {table.getRowModel().rows.map((row: any) => (
+                        <tr key={row.id}>
+                            {row.getVisibleCells().map((cell: any) => (
+                                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                             ))}
-                        </thead>
-                    </SortableContext>
-                    <SortableContext
-                        items={data.map((item: any) => item.name)}
-                        strategy={verticalListSortingStrategy}
-                    >
-                        <tbody>
-                            {table.getRowModel().rows.map((row: any) => (
-                                <DraggableTableRow
-                                    key={row.id}
-                                    id={row.original.name}
-                                    $tableStyles={tableStyles}
-                                >
-                                    {row.getVisibleCells().map((cell: any) => (
-                                        <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                                    ))}
-                                </DraggableTableRow>
-                            ))}
-                        </tbody>
-                    </SortableContext>
-                </Table>
-                <DragOverlay>
-                    {activeId && String(activeId).startsWith('header-') && (
-                        <DragOverlayItem $tableStyles={tableStyles}>
-                            {table.getHeaderGroups()[0].headers.find(header => `header-${header.column.id}` === activeId)?.column.columnDef.header as string}
-                        </DragOverlayItem>
-                    )}
-                </DragOverlay>
-            </DndContext>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+            {table.getRowModel().rows.length === 0 && <NoDataMessage>데이터가 없습니다. 조건에 맞는 검색을 시도해 주시기 바랍니다.</NoDataMessage>}
+            <Pagination 
+                pageIndex={pageIndex} 
+                pageCount={table.getPageCount()} 
+                setPageIndex={table.setPageIndex} 
+                pageSize={limitNum}
+                setPageSize={setLimitNum}
+                pageSizeOptions={PAGE_SIZE_OPTIONS}
+                pageUnit="개씩 보기"
+            />
         </TableCard>
     )
 }
 
-export default TableComponent
-
 const TableCard = styled.div`
-    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    padding: 24px;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s;
+    background: white;
     overflow-x: auto;
-
-    &:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
+    user-select: none;
 `
 
-const TableTitle = styled.h2`
-    margin: 0 0 20px 0;
+const HeaderBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`
+
+const TitleBox = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 12px;
+`
+
+const Title = styled.div`
+    font-size: 24px;
+    font-weight: 600;
     color: #333;
-    font-size: 1.5rem;
 `
 
-const Table = styled.table<{ $tableStyles: TableStyles }>`
+const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    table-layout: auto;
+    border-top: 1px solid #ddd;
 
     th,
     td {
-        padding: 12px;
+        padding: 8px 10px;
         text-align: center;
-        border-bottom: 1px solid ${props => props.$tableStyles?.borderColor};
+        border-bottom: 1px solid #ddd;
         vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     th {
-        background-color: ${props => props.$tableStyles?.headerBackground};
-        font-weight: 600;
-        color: #333;
+        background-color: var(--theme-header-background);
         cursor: pointer;
+    }
 
-        &:hover {
-            background-color: ${props => props.$tableStyles?.headerHoverBackground};
-        }
+    tr {
+        color: #333;
+    }
+
+    tbody tr:nth-child(odd) {
+        background-color: var(--theme-background-even-row);
     }
 
     tr:hover {
-        background-color: ${props => props.$tableStyles?.rowHoverBackground};
+        background-color: var(--theme-background-row-hover) !important;
     }
 `
 
-const DragOverlayItem = styled.div<{ $tableStyles: TableStyles }>`
-    background: ${props => props.$tableStyles.headerBackground};
-    padding: 12px;
-    border: 1px solid ${props => props.$tableStyles.borderColor};
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: grabbing;
-    opacity: 0.9;
-    z-index: 1000;
-    white-space: nowrap;
-    position: fixed;
-    pointer-events: none;
-    touch-action: none;
-    user-select: none;
-    transform: translate3d(var(--translate-x, 0), 0, 0);
-    will-change: transform;
-`;
+const HeaderTitle = styled.th`
+    cursor: pointer;
+    font-weight: 600;
+    color: white;
+`
 
+const HeaderText = styled.span`
+    font-weight: 700;
+    color: #777;
+    text-align: center;
+    position: relative;
+`
+
+const SortIcon = styled.div`
+    position: absolute;
+    left: calc(100% + 1px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+`
+
+const NoDataMessage = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+`
+
+export default TableComponent

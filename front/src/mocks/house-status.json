@@ -1,0 +1,98 @@
+[
+    {
+        "id": "house-a",
+        "name": "House - A",
+        "status": {
+            "temperature": {
+                "current": 30.2,
+                "unit": "℃"
+            },
+            "humidity": {
+                "current": 70.8,
+                "unit": "%"
+            }
+        },
+        "stats": {
+            "chickens": {
+                "count": 35537,
+                "trend": -9
+            },
+            "eggs": {
+                "count": 20614,
+                "trend": 5
+            }
+        }
+    },
+    {
+        "id": "house-b",
+        "name": "House - B",
+        "status": {
+            "temperature": {
+                "current": 28.5,
+                "unit": "℃"
+            },
+            "humidity": {
+                "current": 65.3,
+                "unit": "%"
+            }
+        },
+        "stats": {
+            "chickens": {
+                "count": 32150,
+                "trend": 12
+            },
+            "eggs": {
+                "count": 18925,
+                "trend": -3
+            }
+        }
+    },
+    {
+        "id": "house-c",
+        "name": "House - C",
+        "status": {
+            "temperature": {
+                "current": 29.8,
+                "unit": "℃"
+            },
+            "humidity": {
+                "current": 68.5,
+                "unit": "%"
+            }
+        },
+        "stats": {
+            "chickens": {
+                "count": 38240,
+                "trend": 0
+            },
+            "eggs": {
+                "count": 22456,
+                "trend": 8
+            }
+        }
+    },
+    {
+        "id": "house-d",
+        "name": "House - D",
+        "status": {
+            "temperature": {
+                "current": 31.1,
+                "unit": "℃"
+            },
+            "humidity": {
+                "current": 72.1,
+                "unit": "%"
+            }
+        },
+        "stats": {
+            "chickens": {
+                "count": 33780,
+                "trend": -5
+            },
+            "eggs": {
+                "count": 19847,
+                "trend": 2
+            }
+        }
+    }
+] 
